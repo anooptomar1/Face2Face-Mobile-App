@@ -22,7 +22,6 @@ class ViewController: UIViewController {
         sourceVideo = Video(url: self.source_url)
         targetVideo = Video(url: self.target_url)
         
-        print("log")
     }
 
     override func didReceiveMemoryWarning() {
