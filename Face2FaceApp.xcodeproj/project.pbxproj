@@ -15,7 +15,6 @@
 		04756DD51F69CD76003F0B71 /* Face2FaceAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04756DD41F69CD76003F0B71 /* Face2FaceAppTests.swift */; };
 		04756DE01F69CD76003F0B71 /* Face2FaceAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04756DDF1F69CD76003F0B71 /* Face2FaceAppUITests.swift */; };
 		04892CED1F6B2D24001189DA /* Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04892CEC1F6B2D24001189DA /* Video.swift */; };
-		04892CEF1F6C2C51001189DA /* VideoFrameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04892CEE1F6C2C51001189DA /* VideoFrameManager.swift */; };
 		04892CF01F6C3C96001189DA /* source.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 04892CEA1F6B283A001189DA /* source.mp4 */; };
 		04892CF11F6C3C9B001189DA /* target.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 04892CE91F6B2837001189DA /* target.mp4 */; };
 /* End PBXBuildFile section */
@@ -54,7 +53,6 @@
 		04892CE91F6B2837001189DA /* target.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = target.mp4; sourceTree = "<group>"; };
 		04892CEA1F6B283A001189DA /* source.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = source.mp4; sourceTree = "<group>"; };
 		04892CEC1F6B2D24001189DA /* Video.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Video.swift; sourceTree = "<group>"; };
-		04892CEE1F6C2C51001189DA /* VideoFrameManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoFrameManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,7 +147,6 @@
 			isa = PBXGroup;
 			children = (
 				04892CEC1F6B2D24001189DA /* Video.swift */,
-				04892CEE1F6C2C51001189DA /* VideoFrameManager.swift */,
 			);
 			path = VideoInfo;
 			sourceTree = "<group>";
@@ -293,7 +290,6 @@
 				04756DC21F69CD76003F0B71 /* ViewController.swift in Sources */,
 				04756DC01F69CD76003F0B71 /* AppDelegate.swift in Sources */,
 				04892CED1F6B2D24001189DA /* Video.swift in Sources */,
-				04892CEF1F6C2C51001189DA /* VideoFrameManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
