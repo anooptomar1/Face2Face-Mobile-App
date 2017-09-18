@@ -11,21 +11,28 @@ import AVFoundation
 import UIKit
 
 class Video : NSObject {
+    var url : URL!
     var asset : AVAsset!
     var playerItem : AVPlayerItem!
     var duration : CMTime!
     var fps : Float!
     var resolution : CGSize!
     var imageFrames : [UIImage] = []
-    
+    var assetImageGenerator : AVAssetImageGenerator!
+
     init(url : URL) {
         super.init()
+        self.url = url
         self.asset = AVAsset(url: url)
         self.playerItem = AVPlayerItem(asset: self.asset)
         self.duration = self.asset.duration
+        self.assetImageGenerator = AVAssetImageGenerator(asset: self.asset)
+        self.assetImageGenerator.appliesPreferredTrackTransform = true
+        self.assetImageGenerator.requestedTimeToleranceAfter = kCMTimeZero;
+        self.assetImageGenerator.requestedTimeToleranceBefore = kCMTimeZero;
         self.fps = self.getFrameRate(item: playerItem)
         self.resolution = self.getVideoResolution(asset: asset)
-        self.getVideoFrame(info: self, fps: self.fps)
+//        self.getVideoFrame(info: self, fps: self.fps)
     }
     func getFrameRate(item : AVPlayerItem) -> Float {
         var fps : Float = 0.0
@@ -41,10 +48,7 @@ class Video : NSObject {
         return CGSize(width: fabs(size.width), height: fabs(size.height))
     }
     func getVideoFrameAsynchronously(info : Video, fps : Float){
-        let assetImgGenerator = AVAssetImageGenerator(asset: info.asset)
-        assetImgGenerator.appliesPreferredTrackTransform = true
-        assetImgGenerator.requestedTimeToleranceAfter = kCMTimeZero;
-        assetImgGenerator.requestedTimeToleranceBefore = kCMTimeZero;
+        
         let duration : Float64 = CMTimeGetSeconds(info.duration)
         let durationInt : Int = Int(Float64(fps) * duration)
         
@@ -58,7 +62,7 @@ class Video : NSObject {
             let ftNSValue = NSValue(time: ftCMTime)
             timeFrames.append(ftNSValue)
         }
-        assetImgGenerator.generateCGImagesAsynchronously(forTimes: timeFrames) { (rT, imgData, aT, result, error) in
+        assetImageGenerator.generateCGImagesAsynchronously(forTimes: timeFrames) { (rT, imgData, aT, result, error) in
             if error == nil {
                 let image = UIImage(cgImage : imgData!)
                 self.imageFrames.append(image)
@@ -66,10 +70,7 @@ class Video : NSObject {
         }
     }
     func getVideoFrame(info : Video, fps : Float) {
-        let assetImgGenerator = AVAssetImageGenerator(asset:asset)
-        assetImgGenerator.appliesPreferredTrackTransform = true
-        assetImgGenerator.requestedTimeToleranceAfter = kCMTimeZero;
-        assetImgGenerator.requestedTimeToleranceBefore = kCMTimeZero;
+        
         let dT:Float64 = CMTimeGetSeconds(duration)
         let durationInt:Int = Int(Float64(fps) * dT)
         
@@ -78,7 +79,7 @@ class Video : NSObject {
             let unitTime : Float64 = dT / Float64(durationInt);
             let startTime : Float64 = unitTime * Float64(index)
             generateFrames(
-                assetImgGenerate:assetImgGenerator,
+                assetImgGenerate:assetImageGenerator,
                 fromTime:startTime, scale: Int32(durationInt))
         }
     }
@@ -104,15 +105,12 @@ class Video : NSObject {
         imageFrames.append(frameImg)
     }
     func getVideoFrameByTime(aT: CMTime) -> UIImage {
-        let assetImgGenerator = AVAssetImageGenerator(asset:asset)
-        assetImgGenerator.appliesPreferredTrackTransform = true
-        assetImgGenerator.requestedTimeToleranceAfter = kCMTimeZero;
-        assetImgGenerator.requestedTimeToleranceBefore = kCMTimeZero;
+        
         let cgImage:CGImage?
         
         do
         {
-            cgImage = try assetImgGenerator.copyCGImage(at:aT, actualTime:nil)
+            cgImage = try assetImageGenerator.copyCGImage(at:aT, actualTime:nil)
         }
         catch
         {

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		04058C201F6FFCDF005E74A3 /* TargetVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04058C1F1F6FFCDF005E74A3 /* TargetVideoPlayer.swift */; };
 		04756DC01F69CD76003F0B71 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04756DBF1F69CD76003F0B71 /* AppDelegate.swift */; };
 		04756DC21F69CD76003F0B71 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04756DC11F69CD76003F0B71 /* ViewController.swift */; };
 		04756DC51F69CD76003F0B71 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04756DC31F69CD76003F0B71 /* Main.storyboard */; };
@@ -37,6 +38,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		04058C1F1F6FFCDF005E74A3 /* TargetVideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetVideoPlayer.swift; sourceTree = "<group>"; };
 		04756DBC1F69CD75003F0B71 /* Face2FaceApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Face2FaceApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04756DBF1F69CD76003F0B71 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		04756DC11F69CD76003F0B71 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -80,6 +82,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		04058C1E1F6FFAD1005E74A3 /* VideoPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				04058C1F1F6FFCDF005E74A3 /* TargetVideoPlayer.swift */,
+			);
+			path = VideoPlayer;
+			sourceTree = "<group>";
+		};
 		04756DB31F69CD75003F0B71 = {
 			isa = PBXGroup;
 			children = (
@@ -103,6 +113,7 @@
 		04756DBE1F69CD75003F0B71 /* Face2FaceApp */ = {
 			isa = PBXGroup;
 			children = (
+				04058C1E1F6FFAD1005E74A3 /* VideoPlayer */,
 				04892CEB1F6B2893001189DA /* VideoInfo */,
 				04892CE81F6B2821001189DA /* Resource */,
 				04756DBF1F69CD76003F0B71 /* AppDelegate.swift */,
@@ -288,6 +299,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				04756DC21F69CD76003F0B71 /* ViewController.swift in Sources */,
+				04058C201F6FFCDF005E74A3 /* TargetVideoPlayer.swift in Sources */,
 				04756DC01F69CD76003F0B71 /* AppDelegate.swift in Sources */,
 				04892CED1F6B2D24001189DA /* Video.swift in Sources */,
 			);
