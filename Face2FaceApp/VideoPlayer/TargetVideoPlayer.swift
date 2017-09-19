@@ -10,6 +10,7 @@ import UIKit
 import Foundation
 import AVFoundation
 import CoreGraphics
+import Vision
 
 // MARK: - types
 
@@ -168,6 +169,10 @@ open class TargetVideoPlayer : UIViewController {
     internal var _avplayer: AVPlayer
     internal var _playerItem: AVPlayerItem?
     internal var _timeObserver: Any?
+    internal let _faceDetectHandler = VNSequenceRequestHandler()
+    internal let _faceLandmarksDetectHandler = VNSequenceRequestHandler()
+    internal let _faceDetectRequest = VNDetectFaceRectanglesRequest()
+    internal let _faceLandmarksDetectRequest = VNDetectFaceLandmarksRequest()
     
     internal var _playerView: PlayerView = PlayerView(frame: .zero)
     internal var _seekTimeRequested: CMTime?
@@ -297,6 +302,41 @@ open class TargetVideoPlayer : UIViewController {
                 return CMTimeGetSeconds(playerItem.currentTime())
             } else {
                 return CMTimeGetSeconds(kCMTimeIndefinite)
+            }
+        }
+    }
+    
+    // Current Video Frame's Face Detection Result
+    open var currentFrameFaceDetected: Bool {
+        get {
+            if let image = self.currentFrame {
+                return self.detectionFace(on: image)
+            } else {
+                return false
+            }
+        }
+    }
+    
+    // Media playback's current video frame
+    open var currentFrame: UIImage? {
+        get {
+            if let playerItem = self._playerItem {
+                let currentTime = playerItem.currentTime()
+                let snapshot = self.takeSnapshot(time: currentTime)
+                return snapshot
+            } else {
+                return nil
+            }
+        }
+    }
+    
+    // Get Landmarks for current video frame
+    open var currentLandmarks: VNFaceLandmarks2D? {
+        get {
+            if let videoFrame = self.currentFrame {
+                return self.detectLandmarksByImage(on: videoFrame)
+            } else {
+                return nil
             }
         }
     }
@@ -472,15 +512,14 @@ open class TargetVideoPlayer : UIViewController {
     }
     
     /// Capture a snapshot of the current Player view.
-    open func takeSnapshot() -> UIImage? {
-        if let playerItem = _playerItem {
+    open func takeSnapshot(time : CMTime) -> UIImage? {
+        if let imgGenerator = _imageAssetGenerator {
             var image = UIImage()
-            let currentTime = playerItem.currentTime()
             let cgImage:CGImage?
             
             do
             {
-                cgImage = try _imageAssetGenerator?.copyCGImage(at:currentTime, actualTime:nil)
+                cgImage = try imgGenerator.copyCGImage(at:time, actualTime:nil)
             }
             catch
             {
@@ -494,6 +533,33 @@ open class TargetVideoPlayer : UIViewController {
             return nil
         }
         
+    }
+    
+    // Detect Face by UIImage
+    open func detectionFace(on image: UIImage) -> Bool {
+        try? _faceDetectHandler.perform([_faceDetectRequest], on: image.cgImage!)
+        if let results = _faceDetectRequest.results as? [VNFaceObservation] {
+            _faceLandmarksDetectRequest.inputFaceObservations = results
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    // Detect landmarks by UIImage
+    open func detectLandmarksByImage(on image:UIImage) ->VNFaceLandmarks2D? {
+        let isFaceDetected = self.currentFrameFaceDetected
+        if isFaceDetected {
+            try? _faceLandmarksDetectHandler.perform([_faceLandmarksDetectRequest], on: image.cgImage!)
+            if let landmarksResults = _faceLandmarksDetectRequest.results as? [VNFaceObservation] {
+                //First face's landmarks, but we can expand it to multi faces
+                return landmarksResults.first?.landmarks
+            } else {
+                return nil
+            }
+        } else {
+            return nil
+        }
     }
     
     /// Return the AVPlayerLayer for consumption by
@@ -717,6 +783,7 @@ extension TargetVideoPlayer {
                     default:
                         break
                     }
+                    
                 }
                 
             } else if keyPath == PlayerEmptyBufferKey {
