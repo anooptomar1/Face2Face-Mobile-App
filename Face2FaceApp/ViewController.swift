@@ -16,6 +16,10 @@ class ViewController: UIViewController {
 //    var sourceVideo : Video!
 //    var targetVideo : Video!
     fileprivate var targetPlayer = TargetVideoPlayer()
+    var target_landmarks : Face!
+    @IBOutlet weak var vwTargetVideo: UIView!
+    @IBOutlet weak var imvResult: UIImageView!
+    
     
     //MARK: Object LifeCycle
     deinit {
@@ -30,22 +34,25 @@ class ViewController: UIViewController {
         
         self.view.autoresizingMask = [.flexibleWidth, .flexibleHeight];
         self.targetPlayer.playerDelegate = self
-        self.targetPlayer.view.frame = self.view.bounds
+        self.targetPlayer.view.frame = vwTargetVideo.bounds
         
         self.addChildViewController(self.targetPlayer)
-        self.view.addSubview(self.targetPlayer.view)
+        self.vwTargetVideo.addSubview(self.targetPlayer.view)
         self.targetPlayer.didMove(toParentViewController: self)
         
         self.targetPlayer.url = target_url
         self.targetPlayer.playbackLoops = true
+        self.targetPlayer.playbackLoops = true
+        self.targetPlayer.playFromBegining()
         
-        let tapGestureRecognizer: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ViewController.handleTapGestureRecognizer(_:)))
-        tapGestureRecognizer.numberOfTapsRequired = 1
-        self.targetPlayer.view.addGestureRecognizer(tapGestureRecognizer)
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.targetPlayer.playFromBegining()
+    }
+    @IBAction func actionRecognize(_ sender: UIButton) {
+        target_landmarks = self.targetPlayer.currentLandmarks
+        print("landmark detection")
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
