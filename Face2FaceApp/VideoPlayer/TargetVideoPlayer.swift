@@ -156,16 +156,7 @@ open class TargetVideoPlayer : UIViewController {
             }
         }
     }
-    internal var _imageAssetGenerator: AVAssetImageGenerator? {
-        didSet {
-            if let asset = self.asset {
-                _imageAssetGenerator = AVAssetImageGenerator(asset: asset)
-                _imageAssetGenerator?.appliesPreferredTrackTransform = true
-                _imageAssetGenerator?.requestedTimeToleranceAfter = kCMTimeZero;
-                _imageAssetGenerator?.requestedTimeToleranceBefore = kCMTimeZero;
-            }
-        }
-    }
+    internal var _imageAssetGenerator: AVAssetImageGenerator?
     internal var _avplayer: AVPlayer
     internal var _playerItem: AVPlayerItem?
     internal var _timeObserver: Any?
@@ -331,7 +322,7 @@ open class TargetVideoPlayer : UIViewController {
     }
     
     // Get Landmarks for current video frame
-    open var currentLandmarks: VNFaceLandmarks2D? {
+    var currentLandmarks: Face? {
         get {
             if let videoFrame = self.currentFrame {
                 return self.detectLandmarksByImage(on: videoFrame)
@@ -367,7 +358,7 @@ open class TargetVideoPlayer : UIViewController {
     // MARK : Object Lifecycle
     
     public convenience init() {
-        self.init()
+        self.init(nibName: nil, bundle: nil)
     }
     public required init?(coder aDecoder: NSCoder) {
         self._avplayer = AVPlayer()
@@ -547,13 +538,15 @@ open class TargetVideoPlayer : UIViewController {
     }
     
     // Detect landmarks by UIImage
-    open func detectLandmarksByImage(on image:UIImage) ->VNFaceLandmarks2D? {
-        let isFaceDetected = self.currentFrameFaceDetected
+    func detectLandmarksByImage(on image:UIImage) ->Face? {
+        let isFaceDetected = self.detectionFace(on: image)
         if isFaceDetected {
             try? _faceLandmarksDetectHandler.perform([_faceLandmarksDetectRequest], on: image.cgImage!)
             if let landmarksResults = _faceLandmarksDetectRequest.results as? [VNFaceObservation] {
                 //First face's landmarks, but we can expand it to multi faces
-                return landmarksResults.first?.landmarks
+                let observation = landmarksResults.first
+                let face = Face(frame: image, observation: observation!)
+                return face
             } else {
                 return nil
             }
@@ -603,6 +596,10 @@ extension TargetVideoPlayer {
         self.bufferingState = .unknown
         
         self._asset = asset
+        _imageAssetGenerator = AVAssetImageGenerator(asset: asset)
+        _imageAssetGenerator?.appliesPreferredTrackTransform = true
+        _imageAssetGenerator?.requestedTimeToleranceAfter = kCMTimeZero;
+        _imageAssetGenerator?.requestedTimeToleranceBefore = kCMTimeZero;
         
         let keys = [PlayerTracksKey, PlayerPlayableKey, PlayerDurationKey]
         self._asset?.loadValuesAsynchronously(forKeys: keys, completionHandler: { () -> Void in
