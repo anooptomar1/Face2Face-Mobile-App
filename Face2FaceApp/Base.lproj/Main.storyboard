@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" systemVersion="17A277" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -9,16 +12,58 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Face2FaceApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eF3-oi-p5o">
+                                <rect key="frame" x="0.0" y="54" width="375" height="261"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pUG-UV-fZS">
+                                <rect key="frame" x="0.0" y="356" width="375" height="261"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0w5-Pw-mfb">
+                                        <rect key="frame" x="0.0" y="-9" width="375" height="278"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FWK-kt-tlU">
+                                <rect key="frame" x="98" y="317" width="179" height="34"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <state key="normal" title="Recognize Landmarks"/>
+                                <connections>
+                                    <action selector="actionRecognize:" destination="BYZ-38-t0r" eventType="touchUpInside" id="6sV-Ij-dSE"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="eF3-oi-p5o" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="6a8-JB-F7r"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="pUG-UV-fZS" secondAttribute="bottom" constant="50" id="7Ig-eE-gkC"/>
+                            <constraint firstItem="pUG-UV-fZS" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="7dT-bu-nLg"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="eF3-oi-p5o" secondAttribute="trailing" id="Amo-bC-Rrl"/>
+                            <constraint firstItem="pUG-UV-fZS" firstAttribute="top" secondItem="FWK-kt-tlU" secondAttribute="bottom" constant="5" id="Ivh-KA-QcB"/>
+                            <constraint firstItem="FWK-kt-tlU" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="P0R-DL-UT2"/>
+                            <constraint firstItem="FWK-kt-tlU" firstAttribute="top" secondItem="eF3-oi-p5o" secondAttribute="bottom" constant="2" id="cvv-41-Nqa"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="pUG-UV-fZS" secondAttribute="trailing" id="ix2-nj-tI2"/>
+                            <constraint firstItem="FWK-kt-tlU" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="kCI-3b-OJJ"/>
+                            <constraint firstItem="eF3-oi-p5o" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="34" id="z1N-Hs-ecv"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <connections>
+                        <outlet property="imvResult" destination="0w5-Pw-mfb" id="9ho-JH-dea"/>
+                        <outlet property="vwTargetVideo" destination="eF3-oi-p5o" id="M3N-O0-oP0"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="117.59999999999999" y="118.29085457271366"/>
         </scene>
     </scenes>
 </document>
