@@ -20,7 +20,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var vwTargetVideo: UIView!
     @IBOutlet weak var imvResult: UIImageView!
     
-    
+    let shapeLayer = CAShapeLayer()
     //MARK: Object LifeCycle
     deinit {
         self.targetPlayer.willMove(toParentViewController: self)
@@ -45,14 +45,46 @@ class ViewController: UIViewController {
         self.targetPlayer.playbackLoops = true
         self.targetPlayer.playFromBegining()
         
+        shapeLayer.frame = imvResult.bounds
+        shapeLayer.strokeColor = UIColor.red.cgColor
+        shapeLayer.lineWidth = 2.0
+        
+        //Needs to filp coordinate system for Vision
+        shapeLayer.setAffineTransform(CGAffineTransform(scaleX: -1, y: -1))
+        imvResult.layer.addSublayer(shapeLayer)
+        
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.targetPlayer.playFromBegining()
     }
     @IBAction func actionRecognize(_ sender: UIButton) {
         target_landmarks = self.targetPlayer.currentLandmarks
+        if (target_landmarks != nil) {
+            DispatchQueue.main.async {
+                self.shapeLayer.sublayers?.removeAll()
+            }
+            target_landmarks.normalize()
+            self.draw(points: target_landmarks.faceContour)
+        }
         print("landmark detection")
+    }
+    func draw(points: [CGPoint]) {
+        
+        UIGraphicsBeginImageContext(imvResult.frame.size)
+        imvResult.draw(imvResult.bounds)
+        let context = UIGraphicsGetCurrentContext();
+        context?.setLineWidth(1.0)
+        context?.setStrokeColor(UIColor.red.cgColor)
+        context?.move(to: points[0])
+        
+        for i in 1..<points.count {
+            context?.addLine(to: points[i])
+            context?.move(to: points[i])
+        }
+        
+        context?.strokePath()
+        let img = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -88,6 +120,7 @@ extension ViewController {
 extension ViewController:TargetVideoPlayerDelegate {
     
     func playerReady(_ player: TargetVideoPlayer) {
+        
     }
     
     func playerPlaybackStateDidChange(_ player: TargetVideoPlayer) {
@@ -95,6 +128,7 @@ extension ViewController:TargetVideoPlayerDelegate {
     }
     
     func playerBufferingStateDidChange(_ player: TargetVideoPlayer) {
+        
     }
     func playerBufferTimeDidChange(_ bufferTime: Double) {
         
