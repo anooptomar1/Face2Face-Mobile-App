@@ -16,6 +16,7 @@
 		04756DCA1F69CD76003F0B71 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04756DC81F69CD76003F0B71 /* LaunchScreen.storyboard */; };
 		04756DD51F69CD76003F0B71 /* Face2FaceAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04756DD41F69CD76003F0B71 /* Face2FaceAppTests.swift */; };
 		04756DE01F69CD76003F0B71 /* Face2FaceAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04756DDF1F69CD76003F0B71 /* Face2FaceAppUITests.swift */; };
+		0484ABB51F73FD6500E7AA8F /* CGRect+Scaled.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0484ABB41F73FD6500E7AA8F /* CGRect+Scaled.swift */; };
 		04892CED1F6B2D24001189DA /* Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04892CEC1F6B2D24001189DA /* Video.swift */; };
 		04892CF01F6C3C96001189DA /* source.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 04892CEA1F6B283A001189DA /* source.mp4 */; };
 		04892CF11F6C3C9B001189DA /* target.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 04892CE91F6B2837001189DA /* target.mp4 */; };
@@ -54,6 +55,7 @@
 		04756DDB1F69CD76003F0B71 /* Face2FaceAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Face2FaceAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		04756DDF1F69CD76003F0B71 /* Face2FaceAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Face2FaceAppUITests.swift; sourceTree = "<group>"; };
 		04756DE11F69CD76003F0B71 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0484ABB41F73FD6500E7AA8F /* CGRect+Scaled.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGRect+Scaled.swift"; sourceTree = "<group>"; };
 		04892CE91F6B2837001189DA /* target.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = target.mp4; sourceTree = "<group>"; };
 		04892CEA1F6B283A001189DA /* source.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = source.mp4; sourceTree = "<group>"; };
 		04892CEC1F6B2D24001189DA /* Video.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Video.swift; sourceTree = "<group>"; };
@@ -88,6 +90,7 @@
 			isa = PBXGroup;
 			children = (
 				040490711F71646C0034BAA6 /* Face.swift */,
+				0484ABB41F73FD6500E7AA8F /* CGRect+Scaled.swift */,
 			);
 			path = Face;
 			sourceTree = "<group>";
@@ -312,6 +315,7 @@
 				04756DC21F69CD76003F0B71 /* ViewController.swift in Sources */,
 				04058C201F6FFCDF005E74A3 /* TargetVideoPlayer.swift in Sources */,
 				040490721F71646C0034BAA6 /* Face.swift in Sources */,
+				0484ABB51F73FD6500E7AA8F /* CGRect+Scaled.swift in Sources */,
 				04756DC01F69CD76003F0B71 /* AppDelegate.swift in Sources */,
 				04892CED1F6B2D24001189DA /* Video.swift in Sources */,
 			);
