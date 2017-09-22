@@ -17,6 +17,7 @@ class Face: NSObject {
     var base_boundingbox : CGRect!
     var base_imageSize : CGSize!
     
+    var allPoints : [CGPoint]!
     var faceContour : [CGPoint]!
     var innerLips : [CGPoint]!
     var outerLips : [CGPoint]!
@@ -46,9 +47,18 @@ class Face: NSObject {
         return convertedPoints
     }
     func convertPointsForFace(_ landmark: VNFaceLandmarkRegion2D?, imgSize: CGSize?) ->[CGPoint]{
-        return (landmark?.pointsInImage(imageSize: imgSize!))!
+        let points = landmark?.pointsInImage(imageSize: imgSize!)
+        var pos_reverse = [CGPoint]()
+        for point in points! {
+            let newPos = CGPoint(x: point.x, y: (imgSize?.height)! - point.y)
+            pos_reverse.append(newPos)
+        }
+        return pos_reverse
     }
     func normalize() {
+        if let all_points = landmarks.allPoints {
+            allPoints = convertPointsForFace(all_points, imgSize: base_imageSize)
+        }
         if let fcContour = landmarks.faceContour {
             faceContour = convertPointsForFace(fcContour, imgSize: base_imageSize)
         }

@@ -63,8 +63,23 @@ class ViewController: UIViewController {
             DispatchQueue.main.async {
                 self.shapeLayer.sublayers?.removeAll()
             }
+            imvResult.image = target_landmarks.imageFrame
+            target_landmarks.base_imageSize = imvResult.frame.size
             target_landmarks.normalize()
-            self.draw(points: target_landmarks.faceContour)
+            self.draw(points: target_landmarks.allPoints)
+//            self.draw(points: target_landmarks.faceContour)
+//            self.draw(points: target_landmarks.leftEye)
+//            self.draw(points: target_landmarks.rightEye)
+//            self.draw(points: target_landmarks.leftEyebrow)
+//            self.draw(points: target_landmarks.rightEyebrow)
+//            self.draw(points: target_landmarks.leftPupil)
+//            self.draw(points: target_landmarks.rightPupil)
+//            self.draw(points: target_landmarks.medianLine)
+//            self.draw(points: target_landmarks.noseCrest)
+//            self.draw(points: target_landmarks.nose)
+//            self.draw(points: target_landmarks.innerLips)
+//            self.draw(points: target_landmarks.outerLips)
+            
         }
         print("landmark detection")
     }
@@ -85,6 +100,8 @@ class ViewController: UIViewController {
         context?.strokePath()
         let img = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
+        
+        imvResult.image = img
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
