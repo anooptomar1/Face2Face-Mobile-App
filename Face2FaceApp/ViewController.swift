@@ -9,12 +9,12 @@
 import UIKit
 import ARKit
 import Vision
+import AVFoundation
 
 class ViewController: UIViewController {
-//    let source_url : URL = Bundle.main.url(forResource: "source", withExtension: "mp4")!
     let target_url : URL = Bundle.main.url(forResource: "target", withExtension: "mp4")!
-//    var sourceVideo : Video!
-//    var targetVideo : Video!
+    var session: AVCaptureSession?
+    
     fileprivate var targetPlayer = TargetVideoPlayer()
     var target_landmarks : Face!
     @IBOutlet weak var vwTargetVideo: UIView!
@@ -27,6 +27,18 @@ class ViewController: UIViewController {
         self.targetPlayer.view.removeFromSuperview()
         self.targetPlayer.removeFromParentViewController()
     }
+    
+    lazy var previewLayer: AVCaptureVideoPreviewLayer? = {
+        guard let session = self.session else { return nil }
+        
+        var previewLayer = AVCaptureVideoPreviewLayer(session: session)
+        previewLayer.videoGravity = .resizeAspectFill
+        
+        return previewLayer
+    }()
+    var frontCamera: AVCaptureDevice? = {
+        return AVCaptureDevice.default(AVCaptureDevice.DeviceType.builtInWideAngleCamera, for: AVMediaType.video, position: .front)
+    }()
     
     //MARK: View LifeCycle
     override func viewDidLoad() {
@@ -57,6 +69,37 @@ class ViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
+    func sessionPrepare() {
+        session = AVCaptureSession()
+        guard let session = session, let captureDevice = frontCamera else { return }
+        
+        do {
+            let deviceInput = try AVCaptureDeviceInput(device: captureDevice)
+            session.beginConfiguration()
+            
+            if session.canAddInput(deviceInput) {
+                session.addInput(deviceInput)
+            }
+            
+            let output = AVCaptureVideoDataOutput()
+            output.videoSettings = [
+                String(kCVPixelBufferPixelFormatTypeKey) : Int(kCVPixelFormatType_420YpCbCr8BiPlanarFullRange)
+            ]
+            
+            output.alwaysDiscardsLateVideoFrames = true
+            
+            if session.canAddOutput(output) {
+                session.addOutput(output)
+            }
+            
+            session.commitConfiguration()
+            let queue = DispatchQueue(label: "output.queue")
+            output.setSampleBufferDelegate(self, queue: queue)
+            print("setup delegate")
+        } catch {
+            print("can't setup session")
+        }
+    }
     @IBAction func actionRecognize(_ sender: UIButton) {
         target_landmarks = self.targetPlayer.currentLandmarks
         if (target_landmarks != nil) {
@@ -67,19 +110,6 @@ class ViewController: UIViewController {
             target_landmarks.base_imageSize = imvResult.frame.size
             target_landmarks.normalize()
             self.draw(points: target_landmarks.allPoints)
-//            self.draw(points: target_landmarks.faceContour)
-//            self.draw(points: target_landmarks.leftEye)
-//            self.draw(points: target_landmarks.rightEye)
-//            self.draw(points: target_landmarks.leftEyebrow)
-//            self.draw(points: target_landmarks.rightEyebrow)
-//            self.draw(points: target_landmarks.leftPupil)
-//            self.draw(points: target_landmarks.rightPupil)
-//            self.draw(points: target_landmarks.medianLine)
-//            self.draw(points: target_landmarks.noseCrest)
-//            self.draw(points: target_landmarks.nose)
-//            self.draw(points: target_landmarks.innerLips)
-//            self.draw(points: target_landmarks.outerLips)
-            
         }
         print("landmark detection")
     }
@@ -106,6 +136,22 @@ class ViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
+}
+extension ViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
+    
+    func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+        
+        let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)
+        
+        let attachments = CMCopyDictionaryOfAttachments(kCFAllocatorDefault, sampleBuffer, kCMAttachmentMode_ShouldPropagate)
+        let ciImage = CIImage(cvImageBuffer: pixelBuffer!, options: attachments as! [String : Any]?)
+        
+        //leftMirrored for front camera
+        let ciImageWithOrientation = ciImage.oriented(forExifOrientation: Int32(UIImageOrientation.leftMirrored.rawValue))
+        
+//        detectFace(on: ciImageWithOrientation)
+    }
+    
 }
 // MARK: - UIGestureRecognizer
 
