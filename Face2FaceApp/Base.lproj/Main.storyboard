@@ -19,6 +19,12 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eF3-oi-p5o">
                                 <rect key="frame" x="0.0" y="54" width="375" height="261"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QUv-sN-C6j">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="261"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    </imageView>
+                                </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pUG-UV-fZS">
@@ -31,7 +37,7 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FWK-kt-tlU">
+                            <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FWK-kt-tlU">
                                 <rect key="frame" x="98" y="317" width="179" height="34"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
@@ -57,7 +63,9 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
-                        <outlet property="imvResult" destination="0w5-Pw-mfb" id="9ho-JH-dea"/>
+                        <outlet property="imvSourceResult" destination="0w5-Pw-mfb" id="jrm-Ga-GS1"/>
+                        <outlet property="imvTargetResult" destination="QUv-sN-C6j" id="PU9-h2-Etz"/>
+                        <outlet property="vwSource" destination="pUG-UV-fZS" id="ZWh-YV-mnR"/>
                         <outlet property="vwTargetVideo" destination="eF3-oi-p5o" id="M3N-O0-oP0"/>
                     </connections>
                 </viewController>

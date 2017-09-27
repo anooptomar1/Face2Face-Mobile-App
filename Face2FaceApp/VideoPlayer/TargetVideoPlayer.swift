@@ -554,7 +554,31 @@ open class TargetVideoPlayer : UIViewController {
             return nil
         }
     }
-    
+    // Detect landmarks by CIImage
+    func detectLandmarksByImage(on image:CIImage) ->Face? {
+        let uiImage = convertCIImageToUIImage(cmage: image)
+        let isFaceDetected = self.detectionFace(on: uiImage)
+        if isFaceDetected {
+            try? _faceLandmarksDetectHandler.perform([_faceLandmarksDetectRequest], on: image.cgImage!)
+            if let landmarksResults = _faceLandmarksDetectRequest.results as? [VNFaceObservation] {
+                //First face's landmarks, but we can expand it to multi faces
+                let observation = landmarksResults.first
+                let face = Face(frame: uiImage, observation: observation!)
+                return face
+            } else {
+                return nil
+            }
+        } else {
+            return nil
+        }
+    }
+    func convertCIImageToUIImage(cmage:CIImage) -> UIImage
+    {
+        let context:CIContext = CIContext.init(options: nil)
+        let cgImage:CGImage = context.createCGImage(cmage, from: cmage.extent)!
+        let image:UIImage = UIImage.init(cgImage: cgImage)
+        return image
+    }
     /// Return the AVPlayerLayer for consumption by
     /// things such as Picture in Picture
     open func playerLayer() -> AVPlayerLayer? {

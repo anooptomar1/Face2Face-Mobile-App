@@ -17,8 +17,11 @@ class ViewController: UIViewController {
     
     fileprivate var targetPlayer = TargetVideoPlayer()
     var target_landmarks : Face!
+    var source_landmarks : Face!
     @IBOutlet weak var vwTargetVideo: UIView!
-    @IBOutlet weak var imvResult: UIImageView!
+    @IBOutlet weak var vwSource: UIView!
+    @IBOutlet weak var imvTargetResult: UIImageView!
+    @IBOutlet weak var imvSourceResult: UIImageView!
     
     let shapeLayer = CAShapeLayer()
     //MARK: Object LifeCycle
@@ -28,6 +31,7 @@ class ViewController: UIViewController {
         self.targetPlayer.removeFromParentViewController()
     }
     
+    //MARK: AVCaptureVideoPreviewLayer for live facial tracking(Source Video).
     lazy var previewLayer: AVCaptureVideoPreviewLayer? = {
         guard let session = self.session else { return nil }
         
@@ -36,6 +40,8 @@ class ViewController: UIViewController {
         
         return previewLayer
     }()
+    
+    //MARK: Camera device for live facial tracking(Source Video).
     var frontCamera: AVCaptureDevice? = {
         return AVCaptureDevice.default(AVCaptureDevice.DeviceType.builtInWideAngleCamera, for: AVMediaType.video, position: .front)
     }()
@@ -57,13 +63,19 @@ class ViewController: UIViewController {
         self.targetPlayer.playbackLoops = true
         self.targetPlayer.playFromBegining()
         
-        shapeLayer.frame = imvResult.bounds
+        shapeLayer.frame = imvTargetResult.bounds
         shapeLayer.strokeColor = UIColor.red.cgColor
         shapeLayer.lineWidth = 2.0
         
         //Needs to filp coordinate system for Vision
         shapeLayer.setAffineTransform(CGAffineTransform(scaleX: -1, y: -1))
-        imvResult.layer.addSublayer(shapeLayer)
+        imvTargetResult.layer.addSublayer(shapeLayer)
+        
+        sessionPrepare()
+        guard let previewLayer = previewLayer else { return }
+        
+        vwSource.layer.addSublayer(previewLayer)
+        session?.startRunning()
         
     }
     override func viewDidAppear(_ animated: Bool) {
@@ -106,17 +118,21 @@ class ViewController: UIViewController {
             DispatchQueue.main.async {
                 self.shapeLayer.sublayers?.removeAll()
             }
-            imvResult.image = target_landmarks.imageFrame
-            target_landmarks.base_imageSize = imvResult.frame.size
+            source_landmarks.base_imageSize = imvSourceResult.frame.size
+            source_landmarks.normalize()
+            self.draw(points: source_landmarks.allPoints, imv: imvSourceResult)
+//            imvResult.image = target_landmarks.imageFrame
+            target_landmarks.base_imageSize = imvTargetResult.frame.size
             target_landmarks.normalize()
-            self.draw(points: target_landmarks.allPoints)
+            self.draw(points: target_landmarks.allPoints, imv: imvTargetResult)
+//            self.draw(points: target_landmarks.allPoints, imv: )
         }
         print("landmark detection")
     }
-    func draw(points: [CGPoint]) {
+    func draw(points: [CGPoint], imv: UIImageView) {
         
-        UIGraphicsBeginImageContext(imvResult.frame.size)
-        imvResult.draw(imvResult.bounds)
+        UIGraphicsBeginImageContext(imv.frame.size)
+        imv.draw(imv.bounds)
         let context = UIGraphicsGetCurrentContext();
         context?.setLineWidth(1.0)
         context?.setStrokeColor(UIColor.red.cgColor)
@@ -131,7 +147,7 @@ class ViewController: UIViewController {
         let img = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        imvResult.image = img
+        imv.image = img
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -148,6 +164,19 @@ extension ViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
         
         //leftMirrored for front camera
         let ciImageWithOrientation = ciImage.oriented(forExifOrientation: Int32(UIImageOrientation.leftMirrored.rawValue))
+        source_landmarks = targetPlayer.detectLandmarksByImage(on: ciImageWithOrientation)
+        
+        target_landmarks = self.targetPlayer.currentLandmarks
+        if (source_landmarks != nil && target_landmarks != nil) {
+            DispatchQueue.main.async {
+                self.shapeLayer.sublayers?.removeAll()
+            }
+            imvTargetResult.image = target_landmarks.imageFrame
+            target_landmarks.base_imageSize = imvTargetResult.frame.size
+            target_landmarks.normalize()
+            self.draw(points: target_landmarks.allPoints, imv: imvTargetResult)
+        }
+        
         
 //        detectFace(on: ciImageWithOrientation)
     }
