@@ -17,19 +17,19 @@ class Face: NSObject {
     var base_boundingbox : CGRect!
     var base_imageSize : CGSize!
     
-    var allPoints : [CGPoint]!
-    var faceContour : [CGPoint]!
-    var innerLips : [CGPoint]!
-    var outerLips : [CGPoint]!
-    var leftEye : [CGPoint]!
-    var rightEye : [CGPoint]!
-    var nose : [CGPoint]!
-    var leftEyebrow : [CGPoint]!
-    var rightEyebrow : [CGPoint]!
-    var leftPupil : [CGPoint]!
-    var rightPupil : [CGPoint]!
-    var medianLine : [CGPoint]!
-    var noseCrest : [CGPoint]!
+    var allPoints : [CGPoint] = []
+    var faceContour : [CGPoint] = []
+    var innerLips : [CGPoint] = []
+    var outerLips : [CGPoint] = []
+    var leftEye : [CGPoint] = []
+    var rightEye : [CGPoint] = []
+    var nose : [CGPoint] = []
+    var leftEyebrow : [CGPoint] = []
+    var rightEyebrow : [CGPoint] = []
+    var leftPupil : [CGPoint] = []
+    var rightPupil : [CGPoint] = []
+    var medianLine : [CGPoint] = []
+    var noseCrest : [CGPoint] = []
     
     init(frame: UIImage, observation: VNFaceObservation) {
         super.init()
@@ -46,7 +46,7 @@ class Face: NSObject {
         }
         return convertedPoints
     }
-    func convertPointsForFace(_ landmark: VNFaceLandmarkRegion2D?, imgSize: CGSize?) ->[CGPoint]{
+    func convertPointsForFace(_ landmark: VNFaceLandmarkRegion2D?, imgSize: CGSize?) ->[CGPoint]{        
         let points = landmark?.pointsInImage(imageSize: imgSize!)
         var pos_reverse = [CGPoint]()
         for point in points! {
