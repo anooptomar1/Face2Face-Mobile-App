@@ -20,6 +20,7 @@
 		04892CED1F6B2D24001189DA /* Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04892CEC1F6B2D24001189DA /* Video.swift */; };
 		04892CF01F6C3C96001189DA /* source.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 04892CEA1F6B283A001189DA /* source.mp4 */; };
 		04892CF11F6C3C9B001189DA /* target.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 04892CE91F6B2837001189DA /* target.mp4 */; };
+		04C93D561F94FB8F0004A3D2 /* Face2FaceEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C93D551F94FB8F0004A3D2 /* Face2FaceEngine.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +60,7 @@
 		04892CE91F6B2837001189DA /* target.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = target.mp4; sourceTree = "<group>"; };
 		04892CEA1F6B283A001189DA /* source.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = source.mp4; sourceTree = "<group>"; };
 		04892CEC1F6B2D24001189DA /* Video.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Video.swift; sourceTree = "<group>"; };
+		04C93D551F94FB8F0004A3D2 /* Face2FaceEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Face2FaceEngine.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +93,7 @@
 			children = (
 				040490711F71646C0034BAA6 /* Face.swift */,
 				0484ABB41F73FD6500E7AA8F /* CGRect+Scaled.swift */,
+				04C93D551F94FB8F0004A3D2 /* Face2FaceEngine.swift */,
 			);
 			path = Face;
 			sourceTree = "<group>";
@@ -312,6 +315,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04C93D561F94FB8F0004A3D2 /* Face2FaceEngine.swift in Sources */,
 				04756DC21F69CD76003F0B71 /* ViewController.swift in Sources */,
 				04058C201F6FFCDF005E74A3 /* TargetVideoPlayer.swift in Sources */,
 				040490721F71646C0034BAA6 /* Face.swift in Sources */,
@@ -484,10 +488,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = ZYZ45UZ5GR;
+				DEVELOPMENT_TEAM = 3PD38A6LGM;
 				INFOPLIST_FILE = Face2FaceApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.levelstothegame.levels;
+				PRODUCT_BUNDLE_IDENTIFIER = com.product.7speakingsa;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -499,10 +503,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = ZYZ45UZ5GR;
+				DEVELOPMENT_TEAM = 3PD38A6LGM;
 				INFOPLIST_FILE = Face2FaceApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.levelstothegame.levels;
+				PRODUCT_BUNDLE_IDENTIFIER = com.product.7speakingsa;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

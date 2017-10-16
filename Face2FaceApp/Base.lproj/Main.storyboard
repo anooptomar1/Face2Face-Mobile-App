@@ -5,6 +5,7 @@
     </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -17,28 +18,36 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pUG-UV-fZS">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" alpha="0.5" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0w5-Pw-mfb">
+                                        <rect key="frame" x="0.0" y="-9" width="375" height="684"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eF3-oi-p5o">
-                                <rect key="frame" x="0.0" y="54" width="375" height="261"/>
+                                <rect key="frame" x="0.0" y="20" width="200" height="112.5"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QUv-sN-C6j">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="261"/>
+                                    <imageView userInteractionEnabled="NO" alpha="0.5" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QUv-sN-C6j">
+                                        <rect key="frame" x="0.0" y="0.0" width="200" height="112"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="eF3-oi-p5o" secondAttribute="height" multiplier="25:14" id="eft-i6-1sb"/>
+                                    <constraint firstAttribute="width" constant="200" id="xlU-UT-iK5"/>
+                                </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pUG-UV-fZS">
-                                <rect key="frame" x="0.0" y="356" width="375" height="261"/>
-                                <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0w5-Pw-mfb">
-                                        <rect key="frame" x="0.0" y="-9" width="375" height="278"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                    </imageView>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
-                            <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FWK-kt-tlU">
+                            <button opaque="NO" alpha="0.0" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FWK-kt-tlU">
                                 <rect key="frame" x="98" y="317" width="179" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <state key="normal" title="Recognize Landmarks"/>
@@ -49,16 +58,8 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="eF3-oi-p5o" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="6a8-JB-F7r"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="pUG-UV-fZS" secondAttribute="bottom" constant="50" id="7Ig-eE-gkC"/>
-                            <constraint firstItem="pUG-UV-fZS" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="7dT-bu-nLg"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="eF3-oi-p5o" secondAttribute="trailing" id="Amo-bC-Rrl"/>
-                            <constraint firstItem="pUG-UV-fZS" firstAttribute="top" secondItem="FWK-kt-tlU" secondAttribute="bottom" constant="5" id="Ivh-KA-QcB"/>
-                            <constraint firstItem="FWK-kt-tlU" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="P0R-DL-UT2"/>
-                            <constraint firstItem="FWK-kt-tlU" firstAttribute="top" secondItem="eF3-oi-p5o" secondAttribute="bottom" constant="2" id="cvv-41-Nqa"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="pUG-UV-fZS" secondAttribute="trailing" id="ix2-nj-tI2"/>
-                            <constraint firstItem="FWK-kt-tlU" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="kCI-3b-OJJ"/>
-                            <constraint firstItem="eF3-oi-p5o" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="34" id="z1N-Hs-ecv"/>
+                            <constraint firstItem="eF3-oi-p5o" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="4Hq-KN-M7R"/>
+                            <constraint firstItem="eF3-oi-p5o" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="Vnf-fl-80y"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>

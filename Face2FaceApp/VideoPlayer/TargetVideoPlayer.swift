@@ -530,8 +530,28 @@ open class TargetVideoPlayer : UIViewController {
     open func detectionFace(on image: UIImage) -> Bool {
         try? _faceDetectHandler.perform([_faceDetectRequest], on: image.cgImage!)
         if let results = _faceDetectRequest.results as? [VNFaceObservation] {
-            _faceLandmarksDetectRequest.inputFaceObservations = results
-            return true
+            if !results.isEmpty {
+                _faceLandmarksDetectRequest.inputFaceObservations = results
+                return true
+            } else {
+                return false
+            }
+            
+        } else {
+            return false
+        }
+    }
+    // Detect Face by CIImage
+    open func detectionFaceByCIImage(on image: CIImage) -> Bool {
+        try? _faceDetectHandler.perform([_faceDetectRequest], on: image)
+        if let results = _faceDetectRequest.results as? [VNFaceObservation] {
+            if !results.isEmpty {
+                _faceLandmarksDetectRequest.inputFaceObservations = results
+                return true
+            } else {
+                return false
+            }
+            
         } else {
             return false
         }
@@ -556,13 +576,13 @@ open class TargetVideoPlayer : UIViewController {
     }
     // Detect landmarks by CIImage
     func detectLandmarksByImage(on image:CIImage) ->Face? {
-        let uiImage = convertCIImageToUIImage(cmage: image)
-        let isFaceDetected = self.detectionFace(on: uiImage)
+        let isFaceDetected = self.detectionFaceByCIImage(on: image)
         if isFaceDetected {
-            try? _faceLandmarksDetectHandler.perform([_faceLandmarksDetectRequest], on: image.cgImage!)
+            try? _faceLandmarksDetectHandler.perform([_faceLandmarksDetectRequest], on: image)
             if let landmarksResults = _faceLandmarksDetectRequest.results as? [VNFaceObservation] {
                 //First face's landmarks, but we can expand it to multi faces
                 let observation = landmarksResults.first
+                let uiImage = UIImage(ciImage: image)
                 let face = Face(frame: uiImage, observation: observation!)
                 return face
             } else {
