@@ -16,8 +16,8 @@ class ViewController: UIViewController {
     var session: AVCaptureSession?
     
     fileprivate var targetPlayer = TargetVideoPlayer()
-    var target_landmarks : Face!
-    var source_landmarks : Face!
+    var target_landmarks : Face?
+    var source_landmarks : Face?
     @IBOutlet weak var vwTargetVideo: UIView!
     @IBOutlet weak var vwSource: UIView!
     @IBOutlet weak var imvTargetResult: UIImageView!
@@ -50,12 +50,15 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         self.view.autoresizingMask = [.flexibleWidth, .flexibleHeight];
         self.targetPlayer.playerDelegate = self
         self.targetPlayer.view.frame = vwTargetVideo.bounds
         
         self.addChildViewController(self.targetPlayer)
-        self.vwTargetVideo.addSubview(self.targetPlayer.view)
+        self.vwTargetVideo.insertSubview(self.targetPlayer.view, at: 0)
         self.targetPlayer.didMove(toParentViewController: self)
         
         self.targetPlayer.url = target_url
@@ -76,10 +79,6 @@ class ViewController: UIViewController {
         
         vwSource.layer.addSublayer(previewLayer)
         session?.startRunning()
-        
-    }
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
     }
     func sessionPrepare() {
         session = AVCaptureSession()
@@ -115,32 +114,38 @@ class ViewController: UIViewController {
     @IBAction func actionRecognize(_ sender: UIButton) {
         target_landmarks = self.targetPlayer.currentLandmarks
         if (target_landmarks != nil) {
-            DispatchQueue.main.async {
-                self.shapeLayer.sublayers?.removeAll()
-            }
-            source_landmarks.base_imageSize = imvSourceResult.frame.size
-            source_landmarks.normalize()
-            self.draw(points: source_landmarks.allPoints, imv: imvSourceResult)
+//            DispatchQueue.main.async {
+//                self.shapeLayer.sublayers?.removeAll()
+//            }
+            source_landmarks?.base_imageSize = imvSourceResult.frame.size
+            source_landmarks?.normalize()
+            self.draw(points: (source_landmarks?.allPoints)!, imv: imvSourceResult)
 //            imvResult.image = target_landmarks.imageFrame
-            target_landmarks.base_imageSize = imvTargetResult.frame.size
-            target_landmarks.normalize()
-            self.draw(points: target_landmarks.allPoints, imv: imvTargetResult)
+            target_landmarks?.base_imageSize = imvTargetResult.frame.size
+            target_landmarks?.normalize()
+            self.draw(points: (target_landmarks?.allPoints)!, imv: imvTargetResult)
 //            self.draw(points: target_landmarks.allPoints, imv: )
         }
         print("landmark detection")
     }
-    func draw(points: [CGPoint], imv: UIImageView) {
+    func draw(points: [CGPoint]?, imv: UIImageView) {
+        if points == nil {
+            return
+        }
+        if (points?.count)! < 2 {
+            return
+        }
         
         UIGraphicsBeginImageContext(imv.frame.size)
         imv.draw(imv.bounds)
         let context = UIGraphicsGetCurrentContext();
         context?.setLineWidth(1.0)
         context?.setStrokeColor(UIColor.red.cgColor)
-        context?.move(to: points[0])
+        context?.move(to: points![0])
         
-        for i in 1..<points.count {
-            context?.addLine(to: points[i])
-            context?.move(to: points[i])
+        for i in 1..<(points?.count)! {
+            context?.addLine(to: points![i])
+            context?.move(to: points![i])
         }
         
         context?.strokePath()
@@ -158,27 +163,45 @@ extension ViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
         
         let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)
-        
+        if pixelBuffer == nil {
+            print("pixelBuffer error.")
+        }
         let attachments = CMCopyDictionaryOfAttachments(kCFAllocatorDefault, sampleBuffer, kCMAttachmentMode_ShouldPropagate)
         let ciImage = CIImage(cvImageBuffer: pixelBuffer!, options: attachments as! [String : Any]?)
         
         //leftMirrored for front camera
         let ciImageWithOrientation = ciImage.oriented(forExifOrientation: Int32(UIImageOrientation.leftMirrored.rawValue))
+        if ciImageWithOrientation == nil {
+            print("ciImageWithOrientation error.")
+        }
         source_landmarks = targetPlayer.detectLandmarksByImage(on: ciImageWithOrientation)
         
         target_landmarks = self.targetPlayer.currentLandmarks
-        if (source_landmarks != nil && target_landmarks != nil) {
+        if (self.target_landmarks != nil) {
             DispatchQueue.main.async {
-                self.shapeLayer.sublayers?.removeAll()
+                if self.target_landmarks == nil {
+                    return
+                }
+                self.imvTargetResult.image = self.target_landmarks?.imageFrame
+                self.target_landmarks?.base_imageSize = self.imvTargetResult.frame.size
+                self.target_landmarks?.normalize()
+                self.draw(points: (self.target_landmarks?.allPoints)!, imv: self.imvTargetResult)
             }
-            imvTargetResult.image = target_landmarks.imageFrame
-            target_landmarks.base_imageSize = imvTargetResult.frame.size
-            target_landmarks.normalize()
-            self.draw(points: target_landmarks.allPoints, imv: imvTargetResult)
+            
+        }
+        if (self.source_landmarks != nil) {
+            DispatchQueue.main.async {
+                if self.source_landmarks == nil {
+                    return
+                }
+                self.imvSourceResult.image = self.source_landmarks?.imageFrame
+                self.source_landmarks?.base_imageSize = self.imvSourceResult.frame.size
+                self.source_landmarks?.normalize()
+                self.draw(points: self.source_landmarks?.allPoints, imv: self.imvSourceResult)
+            }
+            
         }
         
-        
-//        detectFace(on: ciImageWithOrientation)
     }
     
 }
